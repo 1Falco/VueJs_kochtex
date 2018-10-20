@@ -1,7 +1,7 @@
 <template>
   <div>
     <ul>
-      <li v-on:click="removeObject(o)" v-for="o in orders" :key="o.id">{{ o.name }}</li>
+      <li v-on:click="removeObject(o)" v-for="o in orders" :key="o.id">{{ o.title }}</li>
     </ul>
     <p v-if="!orders.length">No products!</p>
     <button v-on:click="sortList(orders)">Sort Orders</button>
@@ -20,10 +20,6 @@ export default {
   },
   methods: {
     removeObject(order) {
-      // this.$emit("order-remove", {
-      //   id: uuid(),
-      //   name: order.name
-      // });
       this.$emit("order-remove", 
         order
       );

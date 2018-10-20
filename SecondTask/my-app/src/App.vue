@@ -3,9 +3,9 @@
     <div class="col-sm-6 col-xs-6 col-md-6">
     <h2>My awesome list</h2>
     <!-- <product-list-sort @order-add="onAddOrder" :products="products"></product-list-sort> -->
-    <product-list @order-add="onAddOrder" :products="products"></product-list>
+    <product-list @order-add="onAddOrder" :products="sharedState.products"></product-list>
     <p>Click on objects to add them to your order list</p>
-    <product-add @product-add="onAddProduct"></product-add>
+    <product-add @product-add="onAddProduct" @search-product="onProductSearch"></product-add>
     <br>
     <button v-on:click="removeLast()">Remove last item</button>
   </div>
@@ -29,6 +29,9 @@ import ProductListSort from "./components/ProductListSort";
 import OrderList from "./components/OrderList";
 import OrderListSorter from "./components/OrderListSorter";
 
+import axios from "axios";
+import store from '../store';
+
 export default {
   name: "app",
   components: {
@@ -40,16 +43,16 @@ export default {
   },
   data() {
     return {
-      products: [
-        {
-          id: 0,
-          name: "Coffee"
-        },
-        {
-          id: 1,
-          name: "Pizza"
-        }
-      ],
+      sharedState: store.state,
+      products: [],
+        // {
+        //   id: 0,
+        //   name: "Coffee"
+        // },
+        // {
+        //   id: 1,
+        //   name: "Pizza"
+        // }
       orders: []
     };
   },
@@ -69,20 +72,21 @@ export default {
     onAddOrder(order) {
       this.orders.push(order);
     },
+    onProductSearch(product) {
+      store.showProduct(product)
+    },
     removeOrder(order) {
-      console.log(order);
       var indexToRemove = this.orders.indexOf(order);
-      console.log(indexToRemove);
       if (indexToRemove > -1) {
-        console.log(this.orders);
         this.orders.splice(indexToRemove, 1);
-        console.log(this.orders);
       }
     }
+  },
+  async created() {
+    // this.products = await axios.get('products.json').then(res => res.data);
+    // this.products = await axios.get('https://swapi.co/api/films').then(res => res.data.results);
+    store.fetchProducts()
   }
-  // created() {
-  //   this.$validator.extend('is')
-  // }
 };
 </script>
 
