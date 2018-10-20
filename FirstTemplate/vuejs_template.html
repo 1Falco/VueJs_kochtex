@@ -32,6 +32,10 @@
         <p v-if="!products.length">No products!</p>
         <!-- 6. v-on adds an handler and :click is the name of the event, then goes the function to invoke -->
         <button v-on:click="removeLast()">Remove last item</button>
+        <br/>
+        <div id="form">
+            <input @change.once="addItemByName($event)">
+        </div>
         <button v-on:click="addNewItem()">Add item</button>
     </div>
 
@@ -67,6 +71,14 @@
                     if (indexToRemove > -1) {
                         this.products.splice(indexToRemove, 1)
                     }
+                },
+                addItemByName(event) {
+                    console.log(event)
+                    this.products.push({
+                        id: Math.floor(Math.random(1, 100)),
+                        name: event.target.value
+                    })
+
                 }
             }
         })
